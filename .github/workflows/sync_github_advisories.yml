@@ -42,6 +42,6 @@ jobs:
             Posted from [the `sync_github_advisories` action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
           branch: "sync_github_advisories"
-          commit-message: "Update `sync_github_advisories`"
+          commit-message: "Sync with GitHub Security Advisories"
           author: "Qt Repo Watchbot <qtrepowatchbot[bot]@users.noreply.github.com>"
 
