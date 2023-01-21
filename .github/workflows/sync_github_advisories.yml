@@ -1,0 +1,47 @@
+name: Sync with Github Advisories
+
+on:
+  schedule:
+    # Run at midnight every day at midnight
+    # https://crontab.guru/every-day
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  sync_github_advisories:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update the "sync_github_advisories" branch (ff merge to master)
+        uses: MaximeHeckel/github-action-merge-fast-forward@b4e9b28dce30a682e5fbe3135be4053ea2a75e15
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branchtomerge: "origin/master"
+          branch: "sync_github_advisories"
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby
+      - name: Install ruby dependencies
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Sync with Github Advisories
+        run: bundle exec rake sync_github_advisories
+
+      - name: Commit and make pull request
+        uses: gr2m/create-or-update-pull-request-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: "Update `sync_github_advisories`"
+          body: |
+            The `rake sync_github_advisories` script has detected new Github Advisories.
+            This PR will update the repository to account for those changes.
+            
+            Posted from [the `sync_github_advisories` action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+          branch: "sync_github_advisories"
+          commit-message: "Update `sync_github_advisories`"
+          author: "Qt Repo Watchbot <qtrepowatchbot[bot]@users.noreply.github.com>"
+
