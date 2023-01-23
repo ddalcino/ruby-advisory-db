@@ -18,7 +18,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: "sync_github_advisories"
-          sha: '${{ github.event.pull_request.head.sha }}'
       - name: Update the "sync_github_advisories" branch (ff merge to master)
         uses: MaximeHeckel/github-action-merge-fast-forward@b4e9b28dce30a682e5fbe3135be4053ea2a75e15
         env:
