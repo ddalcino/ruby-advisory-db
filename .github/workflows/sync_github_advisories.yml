@@ -11,7 +11,14 @@ jobs:
   sync_github_advisories:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Create branch "sync_github_advisories" if it does not exist
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: "sync_github_advisories"
+          sha: '${{ github.event.pull_request.head.sha }}'
       - name: Update the "sync_github_advisories" branch (ff merge to master)
         uses: MaximeHeckel/github-action-merge-fast-forward@b4e9b28dce30a682e5fbe3135be4053ea2a75e15
         env:
