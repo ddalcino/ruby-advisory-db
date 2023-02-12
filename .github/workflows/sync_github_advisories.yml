@@ -34,8 +34,7 @@ jobs:
 
       - name: Sync with Github Advisories
         env:
-          GH_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bundle exec rake sync_github_advisories
 
       - name: Commit and make pull request
